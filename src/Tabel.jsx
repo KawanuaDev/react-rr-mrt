@@ -10,6 +10,7 @@ import {
   Menu,
   Box,
   Text,
+  Tabs,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
@@ -126,7 +127,18 @@ export default function Tabel() {
         </Title>
       </Container>
       <Container className="classes-sub">
-        <MantineReactTable table={table} />
+        <Tabs variant="outline" keepMounted={false} defaultValue="default">
+          <Tabs.List position="center">
+            <Tabs.Tab value="default">Default</Tabs.Tab>
+            <Tabs.Tab value="first">First</Tabs.Tab>
+            <Tabs.Tab value="second">Second</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="default" pt="xs">
+            <MantineReactTable table={table} />
+          </Tabs.Panel>
+          <Tabs.Panel value="first" pt="xs">Coming soon.</Tabs.Panel>
+          <Tabs.Panel value="second" pt="xs">Coming soon.</Tabs.Panel>
+        </Tabs>
       </Container>
     </div>
   );
