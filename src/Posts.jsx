@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useLoaderData } from 'react-router-dom';
+import { List } from '@mantine/core';
 
 export async function fetchPosts() {
   const req = await fetch('https://jsonplaceholder.typicode.com/posts');
@@ -19,13 +20,13 @@ export default function Posts() {
   const data = useLoaderData();
   return (
     <div>
-      <ul>
+      <List>
         {data.map((item) => (
-          <li key={item.id}>
+          <List.Item key={item.id}>
             <Link to={`/posts/${item.id}`}>{item.title}</Link>
-          </li>
+          </List.Item>
         ))}
-      </ul>
+      </List>
     </div>
   );
 }
