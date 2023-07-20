@@ -8,6 +8,8 @@ import {
   Title,
   useMantineTheme,
   Menu,
+  Box,
+  Text,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
@@ -98,6 +100,22 @@ export default function Tabel() {
         <Menu.Item icon={<IconSend />}>Send Email</Menu.Item>
       </>
     ),
+    renderDetailPanel: ({ row }) => (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          gap: '16px',
+          padding: '16px',
+        }}
+      >
+        <Box sx={{ textAlign: 'center' }}>
+          <Title order={4}>Catch Phrase:</Title>
+          <Text>&quot;{row.original.company.catchPhrase}&quot;</Text>
+        </Box>
+      </Box>
+    ),
   });
 
   return (
@@ -108,9 +126,7 @@ export default function Tabel() {
         </Title>
       </Container>
       <Container className="classes-sub">
-        {/* <BodyContainer add={open} loading={isLoading} refresh={refreshData}> */}
         <MantineReactTable table={table} />
-        {/* </BodyContainer> */}
       </Container>
     </div>
   );
