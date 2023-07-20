@@ -10,7 +10,7 @@ import {
   Menu,
   Box,
   Text,
-  Tabs,
+  Tabs
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconSend, IconUserCircle } from '@tabler/icons-react';
@@ -63,10 +63,75 @@ export default function Tabel() {
     []
   );
 
-  const table = useMantineReactTable({
+  const tableDefault = useMantineReactTable({
     columns,
     data,
     enablePagination: pagination,
+    enableRowActions: true,
+    enableRowSelection: true,
+    positionToolbarAlertBanner: 'bottom',
+    mantineTableProps: {
+      highlightOnHover: false,
+      withColumnBorders: true,
+      withBorder: colorScheme === 'light',
+    },
+    paginationDisplayMode: 'pages',
+    renderTopToolbarCustomActions: ({ table }) => {
+      const handleContact = () => {
+        table.getSelectedRowModel().flatRows.map((row) => {
+          alert('contact ' + row.getValue('name'));
+        });
+      };
+      return (
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <Button
+            color="blue"
+            disabled={!table.getIsSomeRowsSelected()}
+            onClick={handleContact}
+            variant="filled"
+          >
+            Contact
+          </Button>
+        </div>
+      );
+    },
+    renderRowActionMenuItems: () => (
+      <>
+        <Menu.Item icon={<IconUserCircle />}>View Profile</Menu.Item>
+        <Menu.Item icon={<IconSend />}>Send Email</Menu.Item>
+      </>
+    ),
+    renderDetailPanel: ({ row }) => (
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'flex-start',
+          alignItems: 'center',
+          gap: '16px',
+          padding: '16px',
+        }}
+      >
+        <Box sx={{ textAlign: 'center' }}>
+          <Title order={4}>Catch Phrase:</Title>
+          <Text>&quot;{row.original.company.catchPhrase}&quot;</Text>
+        </Box>
+      </Box>
+    ),
+  });
+  const tableFirst = useMantineReactTable({
+    columns,
+    data,
+    enablePagination: pagination,
+    enableGrouping: true,
+    enableStickyHeader: true,
+    enableStickyFooter: true,
+    mantineToolbarAlertBannerBadgeProps: { color: "blue", variant: "outline" },
+    initialState: {
+      density: "xs",
+      grouping: ["website"],
+      pagination: { pageIndex: 0, pageSize: 20 },
+      sorting: [{ id: "website", desc: false }],
+    },
     enableRowActions: true,
     enableRowSelection: true,
     positionToolbarAlertBanner: 'bottom',
@@ -134,9 +199,11 @@ export default function Tabel() {
             <Tabs.Tab value="second">Second</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="default" pt="xs">
-            <MantineReactTable table={table} />
+            <MantineReactTable table={tableDefault} />
           </Tabs.Panel>
-          <Tabs.Panel value="first" pt="xs">Coming soon.</Tabs.Panel>
+          <Tabs.Panel value="first" pt="xs">
+            <MantineReactTable table={tableFirst} />
+          </Tabs.Panel>
           <Tabs.Panel value="second" pt="xs">Coming soon.</Tabs.Panel>
         </Tabs>
       </Container>
